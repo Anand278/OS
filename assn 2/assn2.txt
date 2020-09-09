@@ -1,0 +1,35 @@
+1. Write a script to create 10 directories, say a1,a2,...,a10
+->mkdir a1,a2,a3,a4,a5,a6,a7,a8,a9,a10
+2. 
+
+
+
+
+3.Write a shell script to rename all files in the current directory with numeric continuous value
+->
+
+
+
+4. Write a script that print environment variable(Print $HOME,$PATH,$SHELL,$HISTORY,$LOGNAME,$TERM)
+
+->  echo $HOME, echo $HISTORY,  echo $LOGNAME, echo $PATH,  echo $TERM,  echo $SHELL
+
+
+
+5. Write a shell script to print all files permissions in current directory(Not name or other details)(Use cut commands)
+->
+
+ 
+
+6. Write a shell script to print all files permissions and name of file
+-> ls -al
+
+
+
+7.Write a shell script to print all files name and size greater than 5K
+->find -type f -name "*.sh" -size +5k -ls
+
+
+##SHELL_PROGRAMS
+
+
