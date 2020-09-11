@@ -1,0 +1,162 @@
+﻿Q1)
+1.	Parent and child process 
+Write a C/CPP program to create a child process. Child should print its pid and its parent’s pid and should exit by printing message as “Child Exiting …”. Parent should print its pid and should exit by printing message as “Parent Exiting ..”. 
+(Hint(functions to be used) : getpid, fork, getppid) 
+
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<sys/types.h>
+#include<unistd.h>
+
+int main()
+pid_t pid;
+
+pid = fork();
+
+if(pid ==0)
+printf("child existing- pid %d, ppid %d \n", getpid(), getppid());
+
+else if(pid> 0)
+printf("Parent existing-pid %d, ppid %d \n", getpid(), getppid());
+
+else
+printf("error creating new process throgh fork() \n");
+exit(0);
+
+
+Q2)Write a program in C/CPP to check the scheduling policy used by the process and its priority. 
+
+#include<iostream>
+ 
+using namespace std;
+ 
+int main()
+{
+    int bt[20],p[20],wt[20],tat[20],pr[20],i,j,n,total=0,pos,temp,avg_wt,avg_tat;
+    cout<<"Enter Total Number of Process:";
+    cin>>n;
+ 
+    cout<<"\nEnter Burst Time and Priority\n";
+    for(i=0;i<n;i++)
+    {
+        cout<<"\nP["<<i+1<<"]\n";
+        cout<<"Burst Time:";
+        cin>>bt[i];
+        cout<<"Priority:";
+        cin>>pr[i];
+        p[i]=i+1;           
+    }
+ 
+   
+    for(i=0;i<n;i++)
+    {
+        pos=i;
+        for(j=i+1;j<n;j++)
+        {
+            if(pr[j]<pr[pos])
+                pos=j;
+        }
+ 
+        temp=pr[i];
+        pr[i]=pr[pos];
+        pr[pos]=temp;
+ 
+        temp=bt[i];
+        bt[i]=bt[pos];
+        bt[pos]=temp;
+ 
+        temp=p[i];
+        p[i]=p[pos];
+        p[pos]=temp;
+    }
+ 
+    wt[0]=0;            
+ 
+    for(i=1;i<n;i++)
+    {
+        wt[i]=0;
+        for(j=0;j<i;j++)
+            wt[i]+=bt[j];
+ 
+        total+=wt[i];
+    }
+ 
+    avg_wt=total/n;     
+    total=0;
+ 
+    cout<<"\nProcess\t    Burst Time    \tWaiting Time\tTurnaround Time";
+    for(i=0;i<n;i++)
+    {
+        tat[i]=bt[i]+wt[i];    
+        total+=tat[i];
+        cout<<"\nP["<<p[i]<<"]\t\t  "<<bt[i]<<"\t\t    "<<wt[i]<<"\t\t\t"<<tat[i];
+    }
+ 
+    avg_tat=total/n;   
+    cout<<"\n\nAverage Waiting Time="<<avg_wt;
+    cout<<"\nAverage Turnaround Time="<<avg_tat;
+ 
+    return 0;
+}
+
+
+Q4)4.	Scheduling algorithm 
+Write a program in C/CPP to take process name, its arrival time and execution/burst time as input. 
+	Use FCFS(non-preemptive) algorithm to calculate wait time of each process, average 
+wait time, turnaround time of each process and average turnaround time. 
+	Calculation of time will start from the arrival time of first process.
+execution/burst time - Time required for execution of process
+	Wait time of process = response time of process - arrival time process
+	Response time of process : time at which process is scheduled to run
+	Average wait time = (sum of wait time of each process) / (number of processes) 
+	Turnaround time of process = (finish/completion time of process) - (arrival time of process)
+	Average turnaround time = (sum of turnaround time of each process) / (number of processes) 
+
+
+
+#include<iostream>
+ 
+using namespace std;
+ 
+int main()
+{
+    int n,bt[20],wt[20],tat[20],avwt=0,avtat=0,i,j;
+    cout<<"Enter total number of processes(maximum 20):";
+    cin>>n;
+ 
+    cout<<"\nEnter Process Burst Time\n";
+    for(i=0;i<n;i++)
+    {
+        cout<<"P["<<i+1<<"]:";
+        cin>>bt[i];
+    }
+ 
+    wt[0]=0;    //waiting time for first process is 0
+ 
+    //calculating waiting time
+    for(i=1;i<n;i++)
+    {
+        wt[i]=0;
+        for(j=0;j<i;j++)
+            wt[i]+=bt[j];
+    }
+ 
+    cout<<"\nProcess\t\tBurst Time\tWaiting Time\tTurnaround Time";
+ 
+    //calculating turnaround time
+    for(i=0;i<n;i++)
+    {
+        tat[i]=bt[i]+wt[i];
+        avwt+=wt[i];
+        avtat+=tat[i];
+        cout<<"\nP["<<i+1<<"]"<<"\t\t"<<bt[i]<<"\t\t"<<wt[i]<<"\t\t"<<tat[i];
+    }
+ 
+    avwt/=i;
+    avtat/=i;
+    cout<<"\n\nAverage Waiting Time:"<<avwt;
+    cout<<"\nAverage Turnaround Time:"<<avtat;
+ 
+    return 0;
+}
